@@ -2,6 +2,7 @@
 import React from 'react'
 import { FiMousePointer } from "react-icons/fi";
 import { motion, useMotionValue , useSpring, useTransform } from 'framer-motion'; 
+import { debounce } from 'lodash'
 
 export default function Framertilt() {
     const x = useMotionValue(0)
@@ -26,14 +27,18 @@ export default function Framertilt() {
 
         x.set(Xpct)
         y.set(Ypct)
+
+        
         
     }
     const handlemouseLeave = () =>{
         x.set(0)
         y.set(0)
     }
+    const debouncedHandleMouseMove = debounce(handleMouseMove, 1); // Adjust the delay as needed
+    const debouncedHandlemouseLeave = debounce(handlemouseLeave, 1); // Adjust the delay as needed
   return (
-    <motion.div onMouseMove={handleMouseMove} onMouseLeave={handlemouseLeave} style={{rotateX,rotateY,transformStyle:"preserve-3d"}}  className="relative h-96 w-72 rounded-xl bg-gradient-to-br from-indigo-300 to-violet-300">
+    <motion.div onMouseMove={debouncedHandleMouseMove} onMouseLeave={debouncedHandlemouseLeave}  style={{rotateX,rotateY,transformStyle:"preserve-3d"}}  className="relative h-96 w-72 rounded-xl bg-gradient-to-br from-indigo-300 to-violet-300">
         
         <div style={{transformStyle:"preserve-3d",transform:"translateZ(75px)"}} className="absolute inset-4 grid place-content-center rounded-xl bg-white shadow-lg">
         <FiMousePointer
